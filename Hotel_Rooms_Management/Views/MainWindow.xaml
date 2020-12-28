@@ -1,0 +1,175 @@
+﻿<Window x:Class="Hotel_Rooms_Management.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Hotel_Rooms_Management"
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Управление гостевым домом" Height="800" Width="1100" MinHeight="800" MinWidth="1100" Background="#3d3d44" WindowStartupLocation="CenterScreen" ResizeMode="CanResize" WindowStyle="None">
+    <Grid Background="#3d3d44" MouseDown="Grid_MouseDown">
+        <StackPanel VerticalAlignment="Top">
+            <Grid Margin="5">
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                    <TextBlock Text="Управление гостевым домом" VerticalAlignment="Center" FontSize="20" FontFamily="Champagne &amp; Limousines" Margin="20 0" Foreground="White"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10 0">
+                    <Button Width="30" Height="30" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Foreground="White" Click="CloseButton_Click">
+                        <materialDesign:PackIcon Kind="Power"/>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+        <Grid Margin="0,51,0.246,-0.369">
+            <Grid Grid.Column="0" Background="#727077">
+                <StackPanel Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Center">
+                    <StackPanel>
+                        <Button Background="White" BorderBrush="{x:Null}" Margin="24 12">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="File" Foreground="Black" VerticalAlignment="Center" Margin="4"/>
+                                <TextBlock Text="Создать отчёт" Foreground="Black" FontSize="16" VerticalAlignment="Center" Margin="6 0 0 0"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel>
+                        <Button Background="White" BorderBrush="{x:Null}" Margin="24 12" Height="75" Width="210">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Add" Foreground="Black" VerticalAlignment="Center" Margin="4" />
+                                <TextBlock Text="Создать заказ" Foreground="Black" FontSize="16" VerticalAlignment="Center" Margin="6 0 0 0"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+            </Grid>
+            <Grid Grid.Column="1" x:Name="CRUDGrid" Visibility="{Binding RoomVisibility}">
+                <Grid Grid.Column ="0">
+                    <TabControl Margin="4">
+                        <TabItem Header="Комнаты" FontSize="14">
+                            <Grid>
+                                <Grid Grid.Column="0">
+                                    <ListBox Grid.Row="0" ItemsSource="{Binding AllRooms}"
+                                        SelectedItem="{Binding SelectedRoom}"
+                                        ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="8">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="{Binding Path=Photo_Path}" Width="300" Height="250" />
+                                                    <TextBlock Margin="4 4 12 4" FontSize="16" Text="{Binding Path=Name}" FontWeight="Bold" />
+                                                    <TextBlock Margin="4 4" FontSize="16" Text="Номер комнаты:" />
+                                                    <TextBlock Margin="0 4" FontSize="16" Text="{Binding Path=Room_Id}" />
+                                                    <TextBlock Margin="4 4" FontSize="16" Text="Стоимость:" />
+                                                    <TextBlock Margin="0 4" FontSize="16" Text="{Binding Path=Price}" />
+                                                    <TextBlock Margin="4 4" FontSize="16" Text="Кол-во кроватей:" />
+                                                    <TextBlock Margin="0 4" FontSize="16" Text="{Binding Path=Beds}" />
+                                                    <TextBlock Margin="4 4" FontSize="16" Text="Status:" />
+                                                    <TextBlock Margin="0 4" FontSize="16" Text="{Binding Path=Status}" />
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                    <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Bottom">
+                                        <Button Content="Создать" Margin="4" Background="#727077" BorderBrush="{x:Null}" Command="{Binding CreateRoom}">
+                                            <Button.ToolTip>Создать комнату</Button.ToolTip>
+                                        </Button>
+                                    </StackPanel>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                </Grid>
+                                <StackPanel Grid.Column="1" HorizontalAlignment="Right">
+                                    <StackPanel DataContext="{Binding SelectedRoom}">
+                                        <TextBlock Margin="4,4,4,16" FontSize="16" Text="Редактирование выбранного элемента" />
+                                        <TextBlock Text="Название" Margin="4" FontSize="14" />
+                                        <TextBox Text="{Binding Name, UpdateSourceTrigger=LostFocus}" Width="300" MaxLength="10" Margin="4" FontSize="14" />
+                                        <TextBlock Text="Цена" Margin="4" FontSize="14" />
+                                        <TextBox Text="{Binding Price, UpdateSourceTrigger=LostFocus}" Width="300" MaxLength="10" Margin="4" FontSize="14" />
+                                        <TextBlock Text="Кровати: " Margin="4" FontSize="14" />
+                                        <TextBox Text="{Binding Beds, UpdateSourceTrigger=LostFocus}" Width="300" MaxLength="10" Margin="4" FontSize="14" />
+                                        <TextBlock Text="Путь к файлу фото" Margin="4" FontSize="14" />
+                                        <TextBox Text="{Binding Price, UpdateSourceTrigger=LostFocus}" Width="300" Margin="4" FontSize="14" />
+                                        <Button x:Name="btnOpen" Content="Обзор" Background="#727077" HorizontalAlignment="Left" Margin="4" Width="85" />
+                                    </StackPanel>
+                                    <Button Content="Применить изменения" Margin="4,16" Background="#727077" BorderBrush="{x:Null}" Command="{Binding UpdateSelectedRoom}">
+                                        <Button.ToolTip>Сохранить изменения для выбранной комнаты</Button.ToolTip>
+                                    </Button>
+                                </StackPanel>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="Услуги" FontSize="14">
+                            <Grid>
+                                <Grid Grid.Column="0">
+                                    <ListBox Grid.Row="0" ItemsSource="{Binding Services}"
+                                             SelectedItem="{Binding SelectedService}"
+                                             ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="8">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock FontSize="16" Margin="4" Text="{Binding Path=Name}"/>
+                                                        <TextBlock FontSize="16" Margin="4" Text="Стоимость: " />
+                                                        <TextBlock FontSize="16" Margin="0 4" Text="{Binding Path=Price}" />
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                    <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Bottom">
+                                        <Button Content="Создать" Margin="4" Background="#727077" BorderBrush="{x:Null}" Command="{Binding CreateIngr}">
+                                            <Button.ToolTip>Создать услугу</Button.ToolTip>
+                                        </Button>
+                                    </StackPanel>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                </Grid>
+                                <StackPanel Grid.Column="1" HorizontalAlignment="Right">
+                                    <StackPanel DataContext="{Binding SelectedService}">
+                                        <TextBlock Margin="4,4,4,16" FontSize="16" Text="Редактирование выбранного элемента" />
+                                        <TextBlock Text="Название" Margin="4" FontSize="14"/>
+                                        <TextBox Text="{Binding BindingGroupName, UpdateSourceTrigger=LostFocus}" Width="300" Margin="4" FontSize="14"/>
+                                        <TextBlock Text="Стоимость" Margin="4" FontSize="14"/>
+                                        <TextBox Text="{Binding BindingGroupName, UpdateSourceTrigger=LostFocus}" Width="300" Margin="4" FontSize="14"/>
+                                    </StackPanel>
+                                    <Button Content="Применить изменения" Margin="4,16" Background="#727077" BorderBrush="{x:Null}" Command="{Binding UpdateSelectedIngr}">
+                                        <Button.ToolTip>Сохранить изменения для выбранной услуги</Button.ToolTip>
+                                    </Button>
+                                </StackPanel>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="Посетители" FontSize="14">
+                            <Grid>
+                                
+                            </Grid> 
+                        </TabItem>
+                    </TabControl>
+                </Grid>
+                <StackPanel Grid.Column="1">
+                </StackPanel>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+            </Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="191*"/>
+                <ColumnDefinition Width="601*"/>
+            </Grid.ColumnDefinitions>
+        </Grid>
+    </Grid>
+</Window>
